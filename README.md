@@ -1,4 +1,4 @@
-# jJVMSIM — A Mini JVM Bytecode Simulator
+# JVMSIM — A Mini JVM Bytecode Simulator
 
 A small Python simulator for a subset of Java bytecode.
 It reads a text file of instructions (one per line), loads them into an
@@ -30,8 +30,6 @@ programs the base instruction set can't express by hand.
 | Arrays (indirect addressing) | `newarray`, `iaload`, `iastore` |
 | Misc | `nop` |
 
-See [`DOCUMENTATION.md`](DOCUMENTATION.md) for full semantics, the file
-format, design decisions, and a walkthrough of every test program.
 
 ## Project layout
 
@@ -49,17 +47,20 @@ jvm-bytecode-simulator/
 │   ├── factorial.jvm            # bonus: n! via a while-loop
 │   ├── fibonacci.jvm             # bonus: first n Fibonacci numbers
 │   ├── gcd.jvm                    # bonus: GCD via Euclid's algorithm
-│   └── legacy_unrolled/
-│       └── sort_unrolled.jvm        # earlier bare-subset-only sort (10-element cap)
+│   └── sort_unrolled.jvm        # earlier bare-subset-only sort (10-element cap)
 ├── inputs/                   # sample input files matching each program
+│   ├── factorial.txt      
+│   ├── fibonacci.txt          
+│   ├── gcd.txt          
+│   ├── matrixsum.txt          
+│   ├── minmax.txt            
+│   ├── sort.txt                         
 ├── tools/
 │   └── generate_sort_program.py  # generator that produced sort_unrolled.jvm
 ├── tests/
 │   └── test_vm.py             # 48 unit tests (loader, VM, all 6 programs, fuzz test)
 ├── run_demos.py               # runs every program against its sample input
 ├── setup.py
-├── requirements.txt
-├── DOCUMENTATION.md            # full write-up of the design and the tasks
 └── README.md                   # this file
 ```
 

@@ -1,0 +1,38 @@
+# High-level Java equivalent:
+#
+#   int n = read();
+#   int result = 1;
+#   int i = 1;
+#   while (i <= n) {
+#       result = result * i;
+#       i = i + 1;
+#   }
+#   print(result);
+#
+# Local variable map: 0=n  1=result  2=i
+
+
+read
+istore 0
+
+ldc 1
+istore 1        # result = 1
+ldc 1
+istore 2        # i = 1
+
+LOOP_CHECK:
+iload 2
+iload 0
+if_icmpgt LOOP_END      # if (i > n) goto end
+
+iload 1
+iload 2
+imul
+istore 1                 # result = result * i
+
+iinc 2 1                 # i = i + 1
+goto LOOP_CHECK
+
+LOOP_END:
+iload 1
+print

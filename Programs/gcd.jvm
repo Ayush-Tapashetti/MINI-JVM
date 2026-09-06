@@ -1,0 +1,43 @@
+# -----------------------------------------------------------------
+# Bonus: read two positive integers, compute their GCD via the
+# Euclidean algorithm, print it. Demonstrates irem and while-loops.
+#
+# High-level Java equivalent:
+#
+#   int a = read();
+#   int b = read();
+#   while (b != 0) {
+#       int t = b;
+#       b = a % b;
+#       a = t;
+#   }
+#   print(a);
+#
+# Local variable map: 0=a  1=b  2=t
+# -----------------------------------------------------------------
+
+read
+istore 0
+read
+istore 1
+
+LOOP_CHECK:
+iload 1
+ifeq LOOP_END          # if (b == 0) goto end
+
+iload 1
+istore 2                # t = b
+
+iload 0
+iload 1
+irem
+istore 1                 # b = a % b
+
+iload 2
+istore 0                 # a = t
+
+goto LOOP_CHECK
+
+LOOP_END:
+iload 0
+print

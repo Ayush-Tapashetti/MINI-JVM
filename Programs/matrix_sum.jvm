@@ -1,0 +1,69 @@
+# -----------------------------------------------------------------
+# Task (c): read two 2x2 matrices (a11,a12,a21,a22 then b11,b12,b21,b22),
+# compute their element-wise sum, and print it in the same order.
+#
+# High-level Java equivalent:
+#
+#   int a11=read(), a12=read(), a21=read(), a22=read();
+#   int b11=read(), b12=read(), b21=read(), b22=read();
+#   int s11 = a11 + b11;
+#   int s12 = a12 + b12;
+#   int s21 = a21 + b21;
+#   int s22 = a22 + b22;
+#   print(s11); print(s12); print(s21); print(s22);
+#
+# Local variable map:
+#   0=a11 1=a12 2=a21 3=a22   4=b11 5=b12 6=b21 7=b22
+#   8=s11 9=s12 10=s21 11=s22
+# -----------------------------------------------------------------
+
+# ---- read matrix A ----
+read
+istore 0
+read
+istore 1
+read
+istore 2
+read
+istore 3
+
+# ---- read matrix B ----
+read
+istore 4
+read
+istore 5
+read
+istore 6
+read
+istore 7
+
+# ---- sum = A + B, element by element ----
+iload 0
+iload 4
+iadd
+istore 8
+
+iload 1
+iload 5
+iadd
+istore 9
+
+iload 2
+iload 6
+iadd
+istore 10
+
+iload 3
+iload 7
+iadd
+istore 11
+
+# ---- print s11, s12, s21, s22 ----
+iload 8
+print
+iload 9
+print
+iload 10
+print
+iload 11
+print

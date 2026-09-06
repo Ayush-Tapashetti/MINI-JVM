@@ -1,0 +1,51 @@
+# -----------------------------------------------------------------
+# Bonus: read n, print the first n Fibonacci numbers (0, 1, 1, 2, 3, ...)
+# Demonstrates loops, dup/swap-free register-based iteration.
+#
+# High-level Java equivalent:
+#
+#   int n = read();
+#   int a = 0, b = 1;
+#   for (int i = 0; i < n; i++) {
+#       print(a);
+#       int next = a + b;
+#       a = b;
+#       b = next;
+#   }
+#
+# Local variable map: 0=n  1=a  2=b  3=i  4=next
+# -----------------------------------------------------------------
+
+read
+istore 0
+
+ldc 0
+istore 1        # a = 0
+ldc 1
+istore 2        # b = 1
+ldc 0
+istore 3        # i = 0
+
+LOOP_CHECK:
+iload 3
+iload 0
+if_icmpge LOOP_END       # if (i >= n) goto end
+
+iload 1
+print                     # print(a)
+
+iload 1
+iload 2
+iadd
+istore 4                  # next = a + b
+
+iload 2
+istore 1                  # a = b
+
+iload 4
+istore 2                  # b = next
+
+iinc 3 1                  # i = i + 1
+goto LOOP_CHECK
+
+LOOP_END:

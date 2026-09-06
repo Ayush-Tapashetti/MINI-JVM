@@ -1,0 +1,79 @@
+# -----------------------------------------------------------------
+# Task (a): read three integers, find their minimum and maximum,
+# store them, and print min then max.
+#
+# High-level Java equivalent:
+#
+#   int a = read();
+#   int b = read();
+#   int c = read();
+#   int min = a, max = a;
+#   if (b < min) min = b;
+#   if (b > max) max = b;
+#   if (c < min) min = c;
+#   if (c > max) max = c;
+#   print(min);
+#   print(max);
+#
+# Local variable map:
+#   0 = a     1 = b     2 = c
+#   3 = min   4 = max
+# -----------------------------------------------------------------
+
+read
+istore 0
+read
+istore 1
+read
+istore 2
+
+# min = a ; max = a
+iload 0
+istore 3
+iload 0
+istore 4
+
+# if (b < min) min = b
+iload 1
+iload 3
+if_icmplt SET_MIN_B
+goto CHECK_MAX_B
+SET_MIN_B:
+iload 1
+istore 3
+
+CHECK_MAX_B:
+# if (b > max) max = b
+iload 1
+iload 4
+if_icmpgt SET_MAX_B
+goto CHECK_C
+SET_MAX_B:
+iload 1
+istore 4
+
+CHECK_C:
+# if (c < min) min = c
+iload 2
+iload 3
+if_icmplt SET_MIN_C
+goto CHECK_MAX_C
+SET_MIN_C:
+iload 2
+istore 3
+
+CHECK_MAX_C:
+# if (c > max) max = c
+iload 2
+iload 4
+if_icmpgt SET_MAX_C
+goto PRINT_RESULTS
+SET_MAX_C:
+iload 2
+istore 4
+
+PRINT_RESULTS:
+iload 3
+print
+iload 4
+print

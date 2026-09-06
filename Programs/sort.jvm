@@ -1,0 +1,132 @@
+# -----------------------------------------------------------------
+# Task (b) v2: read n, read n integers, bubble-sort them ascending,
+# print them. Rewritten to use REAL arrays (newarray/iaload/iastore)
+# instead of the unrolled/guarded technique in the original submission
+# (see programs/legacy_unrolled/sort_unrolled.jvm for that version).
+#
+# Because iaload/iastore take their index from the operand stack at
+# runtime (not as a literal baked into the instruction), this is a
+# genuine loop -- no compile-time cap on n, no code generator needed.
+# This file is entirely hand-written, ~70 lines instead of ~640.
+#
+# High-level Java equivalent:
+#
+#   int n = read();
+#   int[] a = new int[n];
+#   for (int i = 0; i < n; i++) a[i] = read();
+#
+#   for (int i = 0; i < n - 1; i++)
+#       for (int j = 0; j < n - 1 - i; j++)
+#           if (a[j] > a[j + 1]) {
+#               int t = a[j];
+#               a[j] = a[j + 1];
+#               a[j + 1] = t;
+#           }
+#
+#   for (int i = 0; i < n; i++) print(a[i]);
+#
+# Local variable map:
+#   0 = n         1 = arrayref (the array reference returned by newarray)
+#   2 = i         3 = j
+#   5 = temp (used only during the swap)
+# -----------------------------------------------------------------
+
+read
+istore 0                # n = read()
+
+iload 0
+newarray
+istore 1                 # arrayref = new int[n]
+
+# ---- read n elements: for (i = 0; i < n; i++) a[i] = read(); ----
+ldc 0
+istore 2                  # i = 0
+READ_LOOP:
+iload 2
+iload 0
+if_icmpge READ_DONE       # if (i >= n) goto READ_DONE
+iload 1                    # push arrayref
+iload 2                     # push index i
+read                         # push the value read from input
+iastore                       # a[i] = <value>
+iinc 2 1                       # i++
+goto READ_LOOP
+READ_DONE:
+
+# ---- outer loop: for (i = 0; i < n - 1; i++) ----
+ldc 0
+istore 2                # i = 0
+OUTER_LOOP:
+iload 2
+iload 0
+ldc 1
+isub                     # n - 1
+if_icmpge OUTER_DONE      # if (i >= n - 1) goto OUTER_DONE
+
+# ---- inner loop: for (j = 0; j < n - 1 - i; j++) ----
+ldc 0
+istore 3                  # j = 0
+INNER_LOOP:
+iload 3
+iload 0
+ldc 1
+isub
+iload 2
+isub                        # n - 1 - i
+if_icmpge INNER_DONE         # if (j >= n - 1 - i) goto INNER_DONE
+
+# ---- if (a[j] > a[j + 1]) swap ----
+iload 1
+iload 3
+iaload                        # a[j]
+iload 1
+iload 3
+ldc 1
+iadd
+iaload                         # a[j + 1]
+if_icmple NO_SWAP               # if (a[j] <= a[j+1]) no swap needed
+
+iload 1
+iload 3
+iaload
+istore 5                         # temp = a[j]
+
+iload 1
+iload 3
+iload 1
+iload 3
+ldc 1
+iadd
+iaload
+iastore                           # a[j] = a[j + 1]
+
+iload 1
+iload 3
+ldc 1
+iadd
+iload 5
+iastore                            # a[j + 1] = temp
+
+NO_SWAP:
+iinc 3 1                            # j++
+goto INNER_LOOP
+INNER_DONE:
+
+iinc 2 1                             # i++
+goto OUTER_LOOP
+OUTER_DONE:
+
+# ---- print n elements: for (i = 0; i < n; i++) print(a[i]); ----
+ldc 0
+istore 2
+PRINT_LOOP:
+iload 2
+iload 0
+if_icmpge PRINT_DONE
+iload 1
+iload 2
+iaload
+print
+iinc 2 1
+goto PRINT_LOOP
+PRINT_DONE:
